@@ -173,43 +173,6 @@
         </main>
     </div>
 
-    <script>
-        document.getElementById('resume-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            // Get form values
-            const name = document.getElementById('name').value;
-            const about = document.getElementById('about').value;
-            const contact = document.getElementById('contact').value;
-            const email = document.getElementById('email').value;
-            const education = document.getElementById('education').value;
-            const experience = document.getElementById('experience').value;
-
-            // Create resume preview content
-            const resumeContent = `
-                <div style="border: 2px solid #f1c40f; padding: 20px; border-radius: 10px; background: #fffef2;">
-                    <h1 style="color: #f1c40f;">${name}</h1>
-                    <p><strong>About Me:</strong> ${about}</p>
-                    <p><strong>Contact:</strong> ${contact}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                    <p><strong>Education:</strong> ${education}</p>
-                    <p><strong>Work Experience:</strong> ${experience}</p>
-                </div>
-            `;
-
-            // Show preview
-            document.getElementById('resume-content').innerHTML = resumeContent;
-            document.getElementById('resume-preview').style.display = 'block';
-
-            // Show Download Button
-            document.getElementById('download-resume-btn').style.display = 'block';
-        });
-
-        // Download Resume as PDF
-        document.getElementById('download-resume-btn').addEventListener('click', function () {
-            const resumeSection = document.getElementById('resume-content');
-            html2pdf().from(resumeSection).save('resume.pdf');
-        });
-    </script>
+    
 </body>
 </html>
