@@ -1,178 +1,195 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Builder</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <script src="js/html2pdf.bundle.min.js"></script> <!-- Ensure this script is included -->
+    <title>CV Maker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9e1;
             margin: 0;
             padding: 0;
-            background-color: #f9f9e1;
-            color: #333;
-        }
-
-        #app {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #444;
-        }
-
-        main {
             display: flex;
-            gap: 20px;
-        }
-
-        section {
-            flex: 1;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #f1c40f;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        h1 {
-            font-weight: 700;
-            color: #f1c40f;
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #f1c40f;
-        }
-
-        form {
-            display: grid;
-            gap: 15px;
-            position: relative;
-        }
-
-        .form-field {
-            display: flex;
+            justify-content: center;
+            align-items: center;
             flex-direction: column;
+            min-height: 100vh;
         }
-
-        .form-field label {
-            margin-bottom: 5px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        .form-field input, .form-field textarea {
-            padding: 12px;
-            border: 2px solid #f1c40f;
+        .container {
+            background: white;
+            padding: 20px;
             border-radius: 8px;
-            font-size: 16px;
-            background-color: #fffef2;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
         }
-
-        .form-field textarea {
-            resize: vertical;
-            min-height: 100px;
+        h1 {
+            text-align: center;
+            color: #f1c40f;
         }
-
-        /* Buttons */
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
         button {
-            padding: 12px 24px;
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
             border: none;
-            border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            border-radius: 5px;
         }
-
-        button#generate-resume-btn {
-            background-color: #4caf50;
-            color: #ffffff;
+        button:hover {
+            background: #45a049;
+        }
+        .resume-preview {
+            margin-top: 20px;
+            display: none;
+            border: 2px solid #f1c40f;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fffef2;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .resume-preview img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #f1c40f;
+            margin-bottom: 20px;
+        }
+        .resume-preview h1 {
+            color: #f1c40f;
+        }
+        .section-title {
             font-weight: bold;
+            margin-top: 15px;
+            font-size: 18px;
         }
-
-        button#generate-resume-btn:hover {
-            background-color: #45a049;
-        }
-
-        /* New Download Resume Button */
-        button#download-resume-btn {
-            display: none; /* Initially hidden */
-            background-color: #e74c3c;
+        #download-resume-btn {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e74c3c;
             color: white;
-            font-weight: bold;
+            font-size: 16px;
+            border-radius: 5px;
         }
-
-        button#download-resume-btn:hover {
-            background-color: #c0392b;
+        #download-resume-btn:hover {
+            background: #c0392b;
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <header>
-            <h1>Resume Builder</h1>
-        </header>
 
-        <main>
-            <section id="resume-section">
-                <h2>Fill Your Details</h2>
-                <form id="resume-form">
-                    <div class="form-field">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
+    <div class="container">
+        <h1>CV Maker</h1>
+        <form id="resume-form">
+            <label for="profile-pic">Upload Profile Picture</label>
+            <input type="file" id="profile-pic" accept="image/*"><br>
 
-                    <div class="form-field">
-                        <label for="about">About Me:</label>
-                        <textarea id="about" name="about" required></textarea>
-                    </div>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" required>
 
-                    <div class="form-field">
-                        <label for="contact">Contact:</label>
-                        <input type="text" id="contact" name="contact" required>
-                    </div>
+            <label for="about">About Me:</label>
+            <textarea id="about" required></textarea>
 
-                    <div class="form-field">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
+            <label for="contact">Contact:</label>
+            <input type="text" id="contact" required>
 
-                    <div class="form-field">
-                        <label for="education">Education:</label>
-                        <textarea id="education" name="education" required></textarea>
-                    </div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
 
-                    <div class="form-field">
-                        <label for="experience">Work Experience:</label>
-                        <textarea id="experience" name="experience" required></textarea>
-                    </div>
+            <label for="education">Education:</label>
+            <textarea id="education" required></textarea>
 
-                    <!-- Generate Resume Button -->
-                    <button type="submit" id="generate-resume-btn">Generate Resume</button>
+            <label for="experience">Work Experience:</label>
+            <textarea id="experience" required></textarea>
 
-                    <!-- New Download Resume Button -->
-                    <button type="button" id="download-resume-btn">Download Resume</button>
-                </form>
-            </section>
+            <label for="skills">Skills:</label>
+            <textarea id="skills"></textarea>
 
-            <!-- Resume Preview Section -->
-            <section id="resume-preview" style="display: none;">
-                <h2>Resume Preview</h2>
-                <div id="resume-content"></div>
-            </section>
-        </main>
+            <button type="submit">Generate CV</button>
+        </form>
     </div>
 
-    
+    <!-- Resume Preview Section -->
+    <div id="resume-content" class="resume-preview">
+        <img id="preview-img" src="" alt="Profile Picture">
+        <h1 id="preview-name"></h1>
+        <p class="section-title">About Me</p>
+        <p id="preview-about"></p>
+        <p class="section-title">Contact</p>
+        <p id="preview-contact"></p>
+        <p class="section-title">Email</p>
+        <p id="preview-email"></p>
+        <p class="section-title">Education</p>
+        <p id="preview-education"></p>
+        <p class="section-title">Work Experience</p>
+        <p id="preview-experience"></p>
+        <p class="section-title">Skills</p>
+        <p id="preview-skills"></p>
+
+        <button id="download-resume-btn">Download CV</button>
+    </div>
+
+    <script>
+        document.getElementById('resume-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get input values
+            const name = document.getElementById('name').value;
+            const about = document.getElementById('about').value;
+            const contact = document.getElementById('contact').value;
+            const email = document.getElementById('email').value;
+            const education = document.getElementById('education').value;
+            const experience = document.getElementById('experience').value;
+            const skills = document.getElementById('skills').value;
+
+            // Set values in preview
+            document.getElementById('preview-name').textContent = name;
+            document.getElementById('preview-about').textContent = about;
+            document.getElementById('preview-contact').textContent = contact;
+            document.getElementById('preview-email').textContent = email;
+            document.getElementById('preview-education').textContent = education;
+            document.getElementById('preview-experience').textContent = experience;
+            document.getElementById('preview-skills').textContent = skills ? skills : "N/A";
+
+            // Handle Profile Picture
+            const profilePic = document.getElementById('profile-pic').files[0];
+            if (profilePic) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('preview-img').src = event.target.result;
+                };
+                reader.readAsDataURL(profilePic);
+            } else {
+                document.getElementById('preview-img').src = "";
+            }
+
+            // Show preview
+            document.getElementById('resume-content').style.display = 'block';
+            document.getElementById('download-resume-btn').style.display = 'block';
+        });
+
+        // Download Resume as PDF
+        document.getElementById('download-resume-btn').addEventListener('click', function() {
+            const element = document.getElementById('resume-content');
+            html2pdf().from(element).save('Resume.pdf');
+        });
+    </script>
+
 </body>
 </html>
