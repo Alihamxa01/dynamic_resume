@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,88 +7,43 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f9f9e1;
-            margin: 0;
-            padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
         .container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 600px;
         }
-        h1 {
-            text-align: center;
-            color: #f1c40f;
-        }
-        label {
-            font-weight: bold;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background: #45a049;
-        }
         .resume-preview {
-            margin-top: 20px;
             display: none;
-            border: 2px solid #f1c40f;
-            border-radius: 10px;
+            background: white;
             padding: 20px;
-            background: #fffef2;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 20px;
             text-align: center;
         }
-        .resume-preview img {
+        img {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #f1c40f;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
-        .resume-preview h1 {
-            color: #f1c40f;
-        }
-        .section-title {
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 18px;
-        }
-        #download-resume-btn {
-            display: none;
-            margin-top: 15px;
+        button {
             padding: 10px;
-            background: #e74c3c;
+            background: #4CAF50;
             color: white;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-        #download-resume-btn:hover {
-            background: #c0392b;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -97,97 +52,46 @@
     <div class="container">
         <h1>CV Maker</h1>
         <form id="resume-form">
-            <label for="profile-pic">Upload Profile Picture</label>
-            <input type="file" id="profile-pic" accept="image/*"><br>
-
-            <label for="name">Full Name:</label>
+            <label>Full Name:</label>
             <input type="text" id="name" required>
 
-            <label for="about">About Me:</label>
+            <label>About Me:</label>
             <textarea id="about" required></textarea>
-
-            <label for="contact">Contact:</label>
-            <input type="text" id="contact" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-
-            <label for="education">Education:</label>
-            <textarea id="education" required></textarea>
-
-            <label for="experience">Work Experience:</label>
-            <textarea id="experience" required></textarea>
-
-            <label for="skills">Skills:</label>
-            <textarea id="skills"></textarea>
 
             <button type="submit">Generate CV</button>
         </form>
     </div>
 
-    <!-- Resume Preview Section -->
     <div id="resume-content" class="resume-preview">
-        <img id="preview-img" src="" alt="Profile Picture">
         <h1 id="preview-name"></h1>
-        <p class="section-title">About Me</p>
         <p id="preview-about"></p>
-        <p class="section-title">Contact</p>
-        <p id="preview-contact"></p>
-        <p class="section-title">Email</p>
-        <p id="preview-email"></p>
-        <p class="section-title">Education</p>
-        <p id="preview-education"></p>
-        <p class="section-title">Work Experience</p>
-        <p id="preview-experience"></p>
-        <p class="section-title">Skills</p>
-        <p id="preview-skills"></p>
-
         <button id="download-resume-btn">Download CV</button>
     </div>
 
     <script>
         document.getElementById('resume-form').addEventListener('submit', function(event) {
             event.preventDefault();
+            
+            // Get user inputs
+            document.getElementById('preview-name').textContent = document.getElementById('name').value;
+            document.getElementById('preview-about').textContent = document.getElementById('about').value;
 
-            // Get input values
-            const name = document.getElementById('name').value;
-            const about = document.getElementById('about').value;
-            const contact = document.getElementById('contact').value;
-            const email = document.getElementById('email').value;
-            const education = document.getElementById('education').value;
-            const experience = document.getElementById('experience').value;
-            const skills = document.getElementById('skills').value;
-
-            // Set values in preview
-            document.getElementById('preview-name').textContent = name;
-            document.getElementById('preview-about').textContent = about;
-            document.getElementById('preview-contact').textContent = contact;
-            document.getElementById('preview-email').textContent = email;
-            document.getElementById('preview-education').textContent = education;
-            document.getElementById('preview-experience').textContent = experience;
-            document.getElementById('preview-skills').textContent = skills ? skills : "N/A";
-
-            // Handle Profile Picture
-            const profilePic = document.getElementById('profile-pic').files[0];
-            if (profilePic) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('preview-img').src = event.target.result;
-                };
-                reader.readAsDataURL(profilePic);
-            } else {
-                document.getElementById('preview-img').src = "";
-            }
-
-            // Show preview
+            // Show preview section
             document.getElementById('resume-content').style.display = 'block';
-            document.getElementById('download-resume-btn').style.display = 'block';
         });
 
-        // Download Resume as PDF
         document.getElementById('download-resume-btn').addEventListener('click', function() {
             const element = document.getElementById('resume-content');
-            html2pdf().from(element).save('Resume.pdf');
+
+            setTimeout(() => {
+                html2pdf(element, {
+                    margin: 10,
+                    filename: 'Resume.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { format: 'a4', orientation: 'portrait' }
+                });
+            }, 500);
         });
     </script>
 
