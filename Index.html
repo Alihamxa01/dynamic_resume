@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Resume Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,6 +22,7 @@
         }
         .form-group {
             margin: 10px 0;
+            text-align: left;
         }
         input, button {
             padding: 10px;
@@ -39,6 +42,8 @@
         img {
             max-width: 150px;
             border-radius: 50%;
+            display: block;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -88,7 +93,7 @@
 </div>
 
 <div id="resume-preview" class="container">
-    <h2>Resume Preview</h2>
+    <h2>Resume</h2>
     <img id="previewPic" src="" alt="Profile Picture">
     <p><strong>Name:</strong> <span id="previewName"></span></p>
     <p><strong>Father's Name:</strong> <span id="previewFatherName"></span></p>
@@ -102,8 +107,7 @@
 
 <script>
     function toggleMoreFields() {
-        const moreFields = document.getElementById('moreFields');
-        moreFields.classList.toggle('hidden');
+        document.getElementById('moreFields').classList.toggle('hidden');
     }
 
     function generateResume() {
@@ -126,8 +130,19 @@
         document.getElementById('resume-preview').style.display = 'block';
     }
 
-    function downloadPDF() {
-        window.print();
+    async function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+
+        const element = document.getElementById('resume-preview');
+        html2canvas(element).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = 190; // Adjust width
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+            pdf.save('Resume.pdf');
+        });
     }
 </script>
 
