@@ -1,99 +1,135 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Maker</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Dynamic Resume Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9e1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            text-align: center;
+            background-color: #f5f5f5;
         }
         .container {
-            background: white;
+            width: 60%;
+            margin: auto;
             padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-        }
-        .resume-preview {
-            display: none;
             background: white;
-            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        input, button {
+            padding: 10px;
             width: 100%;
-            margin-top: 20px;
-            text-align: center;
+            margin-top: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        #resume-preview {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background: white;
+            text-align: left;
         }
         img {
-            width: 120px;
-            height: 120px;
+            max-width: 150px;
             border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-        button {
-            padding: 10px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>CV Maker</h1>
-        <form id="resume-form">
-            <label>Full Name:</label>
+<div class="container">
+    <h2>Dynamic Resume Generator</h2>
+    
+    <form id="resumeForm">
+        <div class="form-group">
+            <label>Name:</label>
             <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label>Father's Name:</label>
+            <input type="text" id="fatherName" required>
+        </div>
+        <div class="form-group">
+            <label>Phone:</label>
+            <input type="text" id="phone" required>
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="email" required>
+        </div>
+        
+        <button type="button" onclick="toggleMoreFields()">Show More Fields</button>
 
-            <label>About Me:</label>
-            <textarea id="about" required></textarea>
+        <div id="moreFields" class="hidden">
+            <div class="form-group">
+                <label>Address:</label>
+                <input type="text" id="address">
+            </div>
+            <div class="form-group">
+                <label>Education:</label>
+                <input type="text" id="education">
+            </div>
+        </div>
 
-            <button type="submit">Generate CV</button>
-        </form>
-    </div>
+        <div class="form-group">
+            <label>Profile Picture:</label>
+            <input type="file" id="profilePic" accept="image/*">
+        </div>
 
-    <div id="resume-content" class="resume-preview">
-        <h1 id="preview-name"></h1>
-        <p id="preview-about"></p>
-        <button id="download-resume-btn">Download CV</button>
-    </div>
+        <button type="button" onclick="generateResume()">Generate Resume</button>
+    </form>
+</div>
 
-    <script>
-        document.getElementById('resume-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            // Get user inputs
-            document.getElementById('preview-name').textContent = document.getElementById('name').value;
-            document.getElementById('preview-about').textContent = document.getElementById('about').value;
+<div id="resume-preview" class="container">
+    <h2>Resume Preview</h2>
+    <img id="previewPic" src="" alt="Profile Picture">
+    <p><strong>Name:</strong> <span id="previewName"></span></p>
+    <p><strong>Father's Name:</strong> <span id="previewFatherName"></span></p>
+    <p><strong>Phone:</strong> <span id="previewPhone"></span></p>
+    <p><strong>Email:</strong> <span id="previewEmail"></span></p>
+    <p><strong>Address:</strong> <span id="previewAddress"></span></p>
+    <p><strong>Education:</strong> <span id="previewEducation"></span></p>
+    
+    <button onclick="downloadPDF()">Download as PDF</button>
+</div>
 
-            // Show preview section
-            document.getElementById('resume-content').style.display = 'block';
-        });
+<script>
+    function toggleMoreFields() {
+        const moreFields = document.getElementById('moreFields');
+        moreFields.classList.toggle('hidden');
+    }
 
-        document.getElementById('download-resume-btn').addEventListener('click', function() {
-            const element = document.getElementById('resume-content');
+    function generateResume() {
+        document.getElementById('previewName').innerText = document.getElementById('name').value;
+        document.getElementById('previewFatherName').innerText = document.getElementById('fatherName').value;
+        document.getElementById('previewPhone').innerText = document.getElementById('phone').value;
+        document.getElementById('previewEmail').innerText = document.getElementById('email').value;
+        document.getElementById('previewAddress').innerText = document.getElementById('address').value;
+        document.getElementById('previewEducation').innerText = document.getElementById('education').value;
 
-            setTimeout(() => {
-                html2pdf(element, {
-                    margin: 10,
-                    filename: 'Resume.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { format: 'a4', orientation: 'portrait' }
-                });
-            }, 500);
-        });
-    </script>
+        const file = document.getElementById('profilePic').files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('previewPic').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('resume-preview').style.display = 'block';
+    }
+
+    function downloadPDF() {
+        window.print();
+    }
+</script>
 
 </body>
 </html>
