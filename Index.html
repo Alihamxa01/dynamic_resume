@@ -150,7 +150,6 @@
 </html>
  -->
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -161,9 +160,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
-            background: linear-gradient(120deg, #FF9A8B, #FF6A88, #FF99AC);
+            background: linear-gradient(120deg, #001F3F, #003366);
             color: white;
             padding: 20px;
         }
@@ -171,10 +170,13 @@
             width: 60%;
             margin: auto;
             padding: 20px;
-            background: white;
+            background: #F5F5F5;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
             color: black;
+        }
+        h2 {
+            color: #002147;
         }
         .form-group {
             margin: 10px 0;
@@ -184,17 +186,23 @@
             padding: 10px;
             width: 100%;
             margin-top: 5px;
-            border: none;
+            border: 2px solid #FFD700;
             border-radius: 5px;
+            font-size: 16px;
+        }
+        input {
+            background: white;
+            color: black;
         }
         button {
-            background: #FF6A88;
+            background: linear-gradient(120deg, #002147, #004080);
             color: white;
             cursor: pointer;
             transition: 0.3s;
         }
         button:hover {
-            background: #FF99AC;
+            background: #FFD700;
+            color: black;
         }
         .hidden {
             display: none;
@@ -202,15 +210,20 @@
         #resume-preview {
             display: none;
             padding: 20px;
-            border: 1px solid #ddd;
-            background: white;
+            border: 2px solid #FFD700;
+            background: #002147;
+            color: white;
             text-align: left;
+            border-radius: 10px;
         }
         img {
             max-width: 120px;
             border-radius: 50%;
             display: block;
             margin-bottom: 10px;
+        }
+        strong {
+            color: #FFD700;
         }
     </style>
 </head>
